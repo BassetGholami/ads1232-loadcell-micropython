@@ -1,65 +1,21 @@
-# ADS1232 + 100kg Load Cell (MicroPython on Raspberry Pi Pico W)
+MIT License
 
-MicroPython project for reading a **100kg load cell** using the **ADS1232 24-bit ADC** and a **Raspberry Pi Pico W (RP2040)**.
-It includes a simple 2-point calibration (empty + known weight) and continuously prints the weight in **kg**.
+Copyright (c) 2025 BassetGholami
 
-## Hardware
-- MCU: Raspberry Pi Pico W (RP2040, **3.3V logic**)
-- ADC: ADS1232 (powered at **5V** in this setup)
-- Load cell: 100 kg strain gauge load cell (4-wire)
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-## Important (5V ADS1232 vs 3.3V Pico W)
-The Pico W uses **3.3V logic**. If your ADS1232 board drives digital lines at **5V** (especially `DOUT`), you may need:
-- a **logic level shifter**, or
-- another protection/interface circuit
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-Always use a **common GND** between the Pico W and the ADS1232 board.
-
-## Wiring
-
-### 1) Load Cell → ADS1232 (Analog)
-This setup uses the following terminals on the ADS1232 board:
-
-| ADS1232 Terminal | Load Cell Wire Color | Description |
-|---|---|---|
-| E+ | Red   | Excitation + (bridge supply +) |
-| E- | Black | Excitation - (bridge supply -) |
-| A+ | Green | Signal + |
-| A- | White | Signal - |
-
-> Note: Wire colors are common but not universal. If your readings are inverted or unstable, double-check your load cell datasheet and wiring.
-
-### 2) ADS1232 → Raspberry Pi Pico W (Digital)
-GPIO mapping used in `firmware/main.py`:
-
-| ADS1232 Signal | Pico W GPIO | Direction |
-|---|---:|---|
-| PDWN | GP22 | Output |
-| DOUT | GP20 | Input |
-| SCLK | GP21 | Output |
-| GND  | GND  | - |
-
-## Firmware
-- Language: MicroPython
-- Main file: `firmware/main.py`
-
-### Calibration
-On first run, the firmware:
-1. Measures offset with an empty load cell
-2. Asks you to place a known weight (**default 5000 g**)
-3. Saves calibration values to `cal.txt` on the device filesystem
-
-To recalibrate:
-- delete `cal.txt` from the Pico filesystem
-- reboot / run again
-
-## How to run
-1. Flash MicroPython to the Pico W
-2. Copy `firmware/main.py` to the board as `main.py`
-3. Open the serial REPL to see prompts and readings
-
-## Output
-Prints the weight in kg every 0.5 seconds.
-
-## License
-MIT (optional)
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
